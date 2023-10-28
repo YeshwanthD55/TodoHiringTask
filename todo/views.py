@@ -17,9 +17,11 @@ def mark_as_done(request,pk):
 
 def edit_task(request, pk):
     get_task = get_object_or_404(TodoItem, pk=pk)
+    print(get_task)
     if request.method == 'POST':
         new_task = request.POST['task']
-        get_task.task = new_task
+        print(new_task)
+        get_task.title= new_task
         get_task.save()
         return redirect('home')
     else:
@@ -27,6 +29,7 @@ def edit_task(request, pk):
             'get_task': get_task,
         }
         return render(request, 'edit_task.html', context)
+
    
 
 def delete_task(request,pk):
