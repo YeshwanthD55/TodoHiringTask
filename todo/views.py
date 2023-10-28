@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from .models import TodoItem
+from rest_framework import generics
+from .serializers import *
 
 # Create your views here.
 
@@ -36,3 +38,22 @@ def delete_task(request,pk):
    task=get_object_or_404(TodoItem,pk=pk)
    task.delete()
    return redirect('home')
+
+
+#CRUD_API
+
+class ListTodo(generics.ListAPIView):
+    queryset=TodoItem.objects.all()
+    serializer_class=ToDoSerializer
+
+class DetailTodo(generics.RetrieveUpdateAPIView):
+    queryset=TodoItem.objects.all()
+    serializer_class=ToDoSerializer
+
+class CreateTodo(generics.CreateAPIView):
+    queryset=TodoItem.objects.all()
+    serializer_class=ToDoSerializer
+
+class DeleteTodo(generics.DestroyAPIView):
+    queryset=TodoItem.objects.all()
+    serializer_class=ToDoSerializer
