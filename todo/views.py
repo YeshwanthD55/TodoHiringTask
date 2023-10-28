@@ -8,6 +8,7 @@ from .serializers import *
 
 def addTask(request):
    task=request.POST['task']
+   print(task)
    TodoItem.objects.create(title=task,)
    return redirect('home')
 
