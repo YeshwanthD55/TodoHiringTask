@@ -18,6 +18,12 @@ def mark_as_done(request,pk):
    task.save()
    return redirect('home')
 
+def mark_as_undone(request, pk):
+    task = get_object_or_404(TodoItem, pk=pk)
+    task.completed = False
+    task.save(update_fields=['completed']) 
+    return redirect('home')
+
 def edit_task(request, pk):
     get_task = get_object_or_404(TodoItem, pk=pk)
     print(get_task)

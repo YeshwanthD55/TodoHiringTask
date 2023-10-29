@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 {% endfor %}
-               
+                
             </div>
             <div class="col-md-5 col-lg-5">
                 <h5>Completed Tasks</h5>
@@ -47,10 +47,15 @@
                 <div class="card m-1">
                     <div class="card-body">
                         {{task.title}}
+                        <span style="position: relative; float: right;">
+                            <a href="{% url 'mark_as_undone' task.id %}" class="btn btn-danger"><i class="fa fa-close"></i> Mark undone</a>
+                        </span>
                     </div>
                 </div>
                 {% endfor %}
             </div>
+            
+            
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-6 p-0" style="position: absolute; bottom: 50px;">
