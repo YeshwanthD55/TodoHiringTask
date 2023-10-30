@@ -2,7 +2,15 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from todo.models import TodoItem
+from django.urls import include, path, reverse
+from rest_framework.test import APITestCase, URLPatternsTestCase
 from django.utils import timezone
+from rest_framework.test import APIClient
+from rest_framework import status
+from .serializers import ToDoSerializer
+from django.http import JsonResponse
+from django.core.serializers import serialize
+import json
 
 class TestHomeView(TestCase):
     def setUp(self):
@@ -193,3 +201,35 @@ class TaskModelTest(TestCase):
         updated_task = TodoItem.objects.get(id=task.id)
         self.assertEqual(updated_task.task, 'Updated Task')
 
+
+class TodoItemAPITestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.task = TodoItem.objects.create(title='Test Task', completed=True)
+        
+    def test_get_todo_list(self):
+        response = self.client.get('/api/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_todo_item_detail(self):
+        response = self.client.get(f'/api/{self.task.id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_todo_item(self):
+        updated_data = {
+            "title": "Updated Todo",
+            "description": "This is an updated test todo item."
+        }
+        response = self.client.put(f'//{self.task.id}/', updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_invalid_todo_item_detail(self):
+        response = self.client.get('/tasks/999/')  # Non-existent item
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+    
+    
+
+    
+
+    
